@@ -1,0 +1,21 @@
+#/bin/bash
+
+KTPATH=/etc/security/keytab/root.keytab
+
+#Create the keytab
+mkdir -p /etc/security/keytab
+printf "%b" "addent -password -p $KRB_LOGIN -k 1 -e aes128-cts\n$KRB_PASSWORD\nwkt $KTPATH" \
+| ktutil 1>/dev/null
+
+#Test it
+kdestroy -q >/dev/null 2>&1
+msg=$(kinit -k -t $KTPATH $KRB_LOGIN 2>&1 >/dev/null)
+
+if [ $? != 0 ]
+then
+  echo "[ERROR] Failed to create a valid keytab for user $KRB_LOGIN. ($msg)"
+  exit 2
+fi
+kdestroy -q >/dev/null 2>&1
+k5start -LK5 -f $KTPATH -u $KRB_LOGIN
+

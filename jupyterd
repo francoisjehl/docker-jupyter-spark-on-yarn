@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ ! -f /etc/krb5.conf ]];
+then
+  echo "[ERROR] No Kerberos configuration file found at /etc/krb5.conf. Please provide a krb5.conf through docker run volume options."
+  exit 2
+fi
+
+shopt -s nullglob dotglob
+files=(/etc/hadoop/conf/*)
+if [[ ${#files[@]} -eq 0 ]];
+then
+  echo "[ERROR] No Hadoop configuration files found in /etc/hadoop/conf/ Please provide valid Hadoop configuration files through docker run volume options."
+  exit 2
+fi
+
+if [[ ! -f "${SPARK_HOME}/conf/hive-site.xml" ]];
+then  
+  echo "[ERROR] No hive-site.xml found at ${SPARK_HOME}/conf/hive-site.xml. Please provide a hive-site.xml through docker run volume options."
+  exit 2
+fi
+
+jupyter notebook --browser=none
