@@ -41,10 +41,12 @@ RUN R --quiet -e " \
 # Jupyter
 RUN yum install -y \
       python-devel \
-      python-pip
+      python-pip \
+      pandoc
 RUN pip install jupyter
 RUN R --quiet -e " \
-      install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='https://cran.univ-paris1.fr/'); \
+      install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest', 'ggplot2', 'plotly'), \ 
+        repos='https://cran.univ-paris1.fr/'); \
 "  2>/dev/null
 RUN R --quiet -e " \
       devtools::install_github('IRkernel/IRkernel') \
