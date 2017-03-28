@@ -1,7 +1,7 @@
-#docker-spark
+# docker-jupyter-spark-on-yarn
 A convenient docker container to run Jupyter notebooks with Spark on Yarn.
 
-##Build it
+## Build it
 
 Make sure you have docker installed.
 Then build the image from within the folder.
@@ -31,7 +31,7 @@ docker run -ti \
 ```
 No worries about credential expiration: the docker instance embeds k5start and keeps your ticket active.
 
-##Use it
+## Use it
 
 Once the container is started, it will display a link in the console. Click on it, and enter Jupyter.
 Start a R notebook.
@@ -67,7 +67,7 @@ p <- plot_ly(collect(result), x = ~wt, y = ~cyl, z = ~mpg) %>%
                      zaxis = list(title = 'Gross horsepower')))
 embed_notebook(p)
 
-#Write the results in HDFS
+# Write the results in HDFS
 spark_write_csv(result, header=FALSE, path="hdfs://root/user/f.jehl/spark_results")
 dbGetQuery(sc,"CREATE EXTERNAL TABLE IF NOT EXISTS fjehl.results(
   wt double,
