@@ -20,4 +20,5 @@ then
   exit 2
 fi
 
+cd
 jupyter notebook --browser=none

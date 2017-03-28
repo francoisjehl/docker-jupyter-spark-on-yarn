@@ -10,12 +10,18 @@ Then build the image from within the folder.
 docker build -t fjehl/docker-spark .
 ```
 
-Once built, you can run it. You need to supply
+Once built, you can run it, once you provide a set of configurations:
 
- - **Hadoop configuration files** , this should be the whole /etc/hadoop, copied from any PA4 gateway
- - **krb5.conf** from here: https://gitlab.criteois.com/chef-cookbooks/kerberos/raw/master/files/default/krb5.conf
- - **hive-site.xml** from /usr/lib/hive/conf on a gateway
- - Your **credentials**
+You need to supply 3 external volumes for it to run
+
+ - **Hadoop configuration files** such as yarn-site.xml to be mounted in the host as /etc/hadoop/conf/*
+ - **krb5.conf** to be mounted in the guest as /etc/krb5.conf
+ - **hive-site.xml** to be mounted in the guest as /usr/local/spark/conf/hive-site.xml
+
+
+The container also needs your Kerberos **credentials** as environment variables
+ - KRB_LOGIN should be your fully qualified Kerberos login (j.doe@REALM.COM)
+ - KRB_PASSWORD for your password
 
 Then you can run it as follows:
 
@@ -25,7 +31,7 @@ docker run -ti \
   -v <path_containing_hadoop_conf>:/etc/hadoop \
   -v <krb5_conf_file>:/etc/krb5.conf \
   -v <hive_site_xml_file>:/usr/local/spark/conf/hive-site.xml \
-  -e KRB_LOGIN=<user>@CRITEOIS.LAN \
+  -e KRB_LOGIN=<user> \
   -e KRB_PASSWORD=<password> \
   fjehl/docker-spark
 ```

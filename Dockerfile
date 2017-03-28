@@ -80,6 +80,9 @@ RUN mv lzo-hadoop-1.0.5.jar ~
 RUN echo -e "spark.driver.extraClassPath /root/lzo-hadoop-1.0.5.jar\nspark.executor.extraClassPath /root/lzo-hadoop-1.0.5.jar" \
   > /usr/local/spark/conf/spark-defaults.conf
 
+# Housekeeping
+RUN rm scala-*.rpm && rm spark-*.tgz
+
 #Starting supervisor
 CMD ["/usr/bin/supervisord", "-n"]
 
