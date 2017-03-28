@@ -20,5 +20,5 @@ then
   exit 2
 fi
 
-cd
+mkdir ~/jupyter && cd ~/jupyter
 jupyter notebook --browser=none
