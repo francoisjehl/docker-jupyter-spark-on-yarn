@@ -1,5 +1,6 @@
 # docker-jupyter-spark-on-yarn
 A convenient docker container to run Jupyter notebooks with Spark on Yarn.
+Can be found on Docker Hub at https://hub.docker.com/r/fjehl/docker-jupyter-spark-on-yarn/
 
 ## Build it
 
@@ -7,7 +8,7 @@ Make sure you have docker installed.
 Then build the image from within the folder.
 
 ```
-docker build -t fjehl/docker-spark .
+docker build -t fjehl/docker-jupyter-spark-on-yarn .
 ```
 
 Once built, you can run it, once you provide a set of configurations:
@@ -33,7 +34,7 @@ docker run -ti \
   -v <hive_site_xml_file>:/usr/local/spark/conf/hive-site.xml \
   -e KRB_LOGIN=<user> \
   -e KRB_PASSWORD=<password> \
-  fjehl/docker-spark
+  fjehl/docker-jupyter-spark-on-yarn
 ```
 No worries about credential expiration: the docker instance embeds k5start and keeps your ticket active.
 
