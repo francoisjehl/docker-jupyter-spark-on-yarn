@@ -21,4 +21,4 @@ then
 fi
 
 mkdir ~/jupyter && cd ~/jupyter
-jupyter notebook --browser=none
+jupyter notebook --browser=none --ip=*
