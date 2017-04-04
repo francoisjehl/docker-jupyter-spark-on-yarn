@@ -19,19 +19,21 @@ You need to supply 3 external volumes for it to run
  - **krb5.conf** to be mounted in the guest as /etc/krb5.conf
  - **hive-site.xml** to be mounted in the guest as /usr/local/spark/conf/hive-site.xml
 
-
 The container also needs your Kerberos **credentials** as environment variables
  - KRB_LOGIN should be your fully qualified Kerberos login (j.doe@REALM.COM)
  - KRB_PASSWORD for your password
+
+Finally, to be able to run without --net=host, we require your IP to be exposed to Spark so that the driver is reachable from yarn
+ - DOCKER_HOST_IP should be hence set to the host IP
 
 Then you can run it as follows:
 
 ```
 docker run -ti \
-  --net host \
   -v <path_containing_hadoop_conf>:/etc/hadoop \
   -v <krb5_conf_file>:/etc/krb5.conf \
   -v <hive_site_xml_file>:/usr/local/spark/conf/hive-site.xml \
+  -e DOCKER_HOST_IP=<ip> \
   -e KRB_LOGIN=<user> \
   -e KRB_PASSWORD=<password> \
   fjehl/docker-jupyter-spark-on-yarn

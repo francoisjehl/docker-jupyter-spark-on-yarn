@@ -20,5 +20,6 @@ then
   exit 2
 fi
 
-mkdir ~/jupyter && cd ~/jupyter
-jupyter notebook --browser=none --ip=*
+cd ~/jupyter
+envsubst < /usr/local/spark/conf/spark-defaults.conf.template > /usr/local/spark/conf/spark-defaults.conf
+jupyter notebook --no-browser --ip="*"

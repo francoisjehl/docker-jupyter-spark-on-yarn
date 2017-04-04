@@ -1,0 +1,12 @@
+spark.driver.bindAddress: 0.0.0.0
+spark.driver.host: ${DOCKER_HOST_IP}
+spark.driver.extraClassPath /root/lzo-hadoop-1.0.5.jar
+spark.executor.extraClassPath /root/lzo-hadoop-1.0.5.jar
+
+spark.driver.port: 7001
+spark.fileserver.port: 7002
+spark.broadcast.port: 7003
+spark.replClassServer.port: 7004 
+spark.blockManager.port: 7005
+
+spark.ui.port=4040
