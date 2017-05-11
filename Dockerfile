@@ -24,6 +24,7 @@ ENV PATH "$PATH:/usr/local/spark/bin"
 ENV SPARK_HOME "/usr/local/spark"
 ENV SPARK_SUBMIT_OPTS "-Djava.security.krb5.conf=/etc/krb5.conf"
 ENV HADOOP_CONF_DIR "/etc/hadoop/conf"
+ENV PYTHONPATH="${SPARK_HOME}/python"
 
 # R
 RUN yum install -y \
@@ -49,6 +50,7 @@ RUN yum install -y \
       python-devel \
       python-pip \
       pandoc
+RUN pip install --upgrade pip
 RUN pip install jupyter
 RUN R --quiet -e " \
       devtools::install_github('IRkernel/IRkernel') \
@@ -67,6 +69,15 @@ RUN R --quiet -e " \
         repos='https://cran.univ-paris1.fr/'); \
 " 2>/dev/null
 
+# Additional Python packages
+RUN pip install py4j \
+      numpy \
+      pandas \
+      theano \
+      keras \
+      tensorflow
+
+RUN pip install -U scikit-learn
 
 # Kerberos clients
 RUN yum install -y \
