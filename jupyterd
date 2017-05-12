@@ -22,4 +22,4 @@ fi
 
 cd ~/jupyter
 envsubst < /usr/local/spark/conf/spark-defaults.conf.template > /usr/local/spark/conf/spark-defaults.conf
-jupyter notebook --no-browser --ip="*"
+jupyter notebook --no-browser --allow-root --ip="*"
