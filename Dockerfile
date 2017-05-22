@@ -88,7 +88,7 @@ RUN source activate python2 && \
 RUN source activate python3 && \
     R --quiet -e " \
       IRkernel::installspec(user = FALSE) \
-"
+" 2>/dev/null
 
 # Kerberos clients
 RUN yum install -y \
