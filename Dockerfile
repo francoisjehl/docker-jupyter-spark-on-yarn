@@ -45,20 +45,10 @@ RUN R --quiet -e " \
       devtools::install_github('rstudio/sparklyr', dependencies=TRUE) \
 " 2>/dev/null
 
-# Jupyter
-RUN yum install -y \
-      python-devel \
-      python-pip \
-      pandoc
-RUN pip install --upgrade pip
-RUN pip install jupyter
+# R Kernel
 RUN R --quiet -e " \
       devtools::install_github('IRkernel/IRkernel') \
 " 2>/dev/null
-RUN R --quiet -e " \
-      IRkernel::installspec(user = FALSE) \
-" 2>/dev/null
-RUN mkdir /root/jupyter
 
 # Plotly Visualization Library
 RUN R --quiet -e " \
@@ -69,25 +59,46 @@ RUN R --quiet -e " \
         repos='https://cran.univ-paris1.fr/'); \
 " 2>/dev/null
 
-# Additional Python packages
-RUN pip install py4j \
-      numpy \
-      pandas \
-      theano \
-      keras \
-      tensorflow
+# Miniconda
+RUN yum install -y \
+      bzip2
 
-RUN pip install -U scikit-learn
+RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+RUN chmod +x Miniconda3-latest-Linux-x86_64.sh
+RUN bash Miniconda3-latest-Linux-x86_64.sh -b
+ENV PATH="/root/miniconda3/bin:${PATH}"
+
+# Python
+# 3.x
+COPY python3.yml /tmp/python3.yml
+RUN conda env create -f /tmp/python3.yml
+# 2.x
+COPY python2.yml /tmp/python2.yml
+RUN conda env create -f /tmp/python2.yml
+
+#Jupyter Kernel registration
+RUN mkdir /root/jupyter
+# Python 3.x
+RUN source activate python3 && \
+    ipython kernel install --user
+# Python 2.x
+RUN source activate python2 && \
+    ipython kernel install --user
+# R
+RUN source activate python3 && \
+    R --quiet -e " \
+      IRkernel::installspec(user = FALSE) \
+"
 
 # Kerberos clients
 RUN yum install -y \
       kstart \
       krb5-workstation 
 
-# SupervisorD
-RUN yum install -y \
-      python-setuptools
-RUN easy_install supervisor
+# Supervisor
+COPY supervisor.yml /tmp/supervisor.yml
+RUN conda env create -f /tmp/supervisor.yml
+
 COPY k5startd /usr/local/bin/k5startd
 COPY jupyterd /usr/local/bin/jupyterd
 COPY jupyterd.sv.conf /etc/supervisor/conf.d/
@@ -116,5 +127,6 @@ EXPOSE 7001:7005
 EXPOSE 8888
 
 #Starting supervisor
-CMD ["/usr/bin/supervisord", "-n"]
+COPY supervisord /usr/local/bin/supervisord
+ENTRYPOINT ["/usr/local/bin/supervisord"]
 

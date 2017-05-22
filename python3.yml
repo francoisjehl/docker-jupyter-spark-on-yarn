@@ -1,0 +1,12 @@
+name: python3
+dependencies:
+- python=3.6
+- numpy
+- pandas
+- theano
+- keras
+- tensorflow
+- scikit-learn
+- notebook
+- ipykernel
+- jupyter

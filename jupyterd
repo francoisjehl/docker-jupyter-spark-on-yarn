@@ -21,5 +21,6 @@ then
 fi
 
 cd ~/jupyter
+source activate python3
 envsubst < /usr/local/spark/conf/spark-defaults.conf.template > /usr/local/spark/conf/spark-defaults.conf
 jupyter notebook --no-browser --allow-root --ip="*"

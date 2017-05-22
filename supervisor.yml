@@ -1,0 +1,4 @@
+name: supervisor
+dependencies:
+- python=2.7
+- supervisor
