@@ -1,0 +1,4 @@
+name: python26
+dependencies:
+- python=2.6
+- ipython=1.2.1

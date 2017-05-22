@@ -69,21 +69,24 @@ RUN bash Miniconda3-latest-Linux-x86_64.sh -b
 ENV PATH="/root/miniconda3/bin:${PATH}"
 
 # Python
-# 3.x
+# 3.6
 COPY python3.yml /tmp/python3.yml
 RUN conda env create -f /tmp/python3.yml
-# 2.x
-COPY python2.yml /tmp/python2.yml
-RUN conda env create -f /tmp/python2.yml
+# 2.7
+COPY python27.yml /tmp/python27.yml
+RUN conda env create -f /tmp/python27.yml
+# 2.6
+COPY python26.yml /tmp/python26.yml
+RUN conda env create -f /tmp/python26.yml
 
 #Jupyter Kernel registration
 RUN mkdir /root/jupyter
-# Python 3.x
+# Python 3.6
 RUN source activate python3 && \
-    ipython kernel install --user
-# Python 2.x
-RUN source activate python2 && \
-    ipython kernel install --user
+    ipython kernel install --user --display-name "Python 3.6"
+# Python 2.7
+RUN source activate python27 && \
+    ipython kernel install --user --display-name "Python 2.7"
 # R
 RUN source activate python3 && \
     R --quiet -e " \
